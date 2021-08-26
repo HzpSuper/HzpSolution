@@ -1,10 +1,14 @@
-﻿using HzpSolution.Views;
+﻿using AvalonDock;
+using HzpSolution.Views;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
 using Prism.Ioc;
+using Prism.Modularity;
+using Prism.Regions;
 using System.Windows;
 using System.Windows.Media;
+using Zametek.Wpf.Core;
 
 namespace HzpSolution
 {
@@ -43,6 +47,17 @@ namespace HzpSolution
 
         }
 
- 
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new ConfigurationModuleCatalog();
+        }
+
+
+        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+        {
+            base.ConfigureRegionAdapterMappings(regionAdapterMappings);
+            regionAdapterMappings.RegisterMapping(typeof(DockingManager), Container.Resolve<DockingManagerRegionAdapter>());  
+        }
+
     }
 }

@@ -6,6 +6,7 @@
     <AssemblyName>HzpSolution</AssemblyName>
     <Nullable>enable</Nullable>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
     <Win32Resource />
   </PropertyGroup>
   <ItemGroup>
@@ -14,6 +15,11 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.1.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="Zametek.Prism.AvalonDock.Core" Version="0.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MotionModule\MotionModule.csproj" />
+    <ProjectReference Include="..\VisionModule\VisionModule.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Logo.jpg" />

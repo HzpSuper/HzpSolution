@@ -6,6 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using WinInterop = System.Windows.Interop;
+using System.Runtime.InteropServices;
+using System;
+using System.Windows.Media;
+using Zametek.Wpf.Core;
 
 namespace HzpSolution.Views
 {
@@ -17,6 +22,13 @@ namespace HzpSolution.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            #region 初始化时最大化窗体
+            this.Left = 0.0;
+            this.Top = 0.0;
+            this.Height = SystemParameters.MaximizedPrimaryScreenHeight-10;
+            this.Width = SystemParameters.MaximizedPrimaryScreenWidth-10;
+            #endregion
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
@@ -40,11 +52,6 @@ namespace HzpSolution.Views
             this.Close();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            DemoItemsSearchBox.Focus();
-        }
-
         private void MinWindow_Click(object sender, RoutedEventArgs e)
         {
            this.WindowState = WindowState.Minimized;
@@ -55,7 +62,10 @@ namespace HzpSolution.Views
         {
             if(_isWindowMax)
             {
-                this.WindowState = WindowState.Normal;
+                this.Left = SystemParameters.MaximizedPrimaryScreenWidth / 2 - this.MinWidth  / 2;
+                this.Top = SystemParameters.MaximizedPrimaryScreenHeight / 2 - this.MinHeight / 2;
+                this.Height = this.MinHeight;
+                this.Width  = this.MinWidth;
                 this.MaxWindowPackion.Kind = PackIconKind.BorderAllVariant;
                 this.MaxWindowToolTip.Content = "最大化";
                 _isWindowMax = false;
@@ -63,7 +73,10 @@ namespace HzpSolution.Views
             }
             else
             {
-                this.WindowState = WindowState.Maximized;
+                this.Left = 0.0;
+                this.Top = 0.0;
+                this.Height = SystemParameters.MaximizedPrimaryScreenHeight-10;
+                this.Width = SystemParameters.MaximizedPrimaryScreenWidth-10;
                 this.MaxWindowPackion.Kind = PackIconKind.ImageFilterNone;
                 this.MaxWindowToolTip.Content = "向下还原";
                 _isWindowMax = true;
@@ -71,6 +84,28 @@ namespace HzpSolution.Views
         }
         #endregion
 
+
+        private void OpenMessageModul_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as CheckBox)?.IsChecked ?? false)
+            {
+                MainGrid.RowDefinitions[4].Height = new System.Windows.GridLength(1, GridUnitType.Star);
+            }
+            else
+            {
+                MainGrid.RowDefinitions[4].Height = new System.Windows.GridLength(0);
+            }
+        }
+
+        private void ToolBar_Loaded(object sender, RoutedEventArgs e)
+        {
+            ToolBar? toolBar = sender as ToolBar;
+            ToggleButton? overflowGrid = ((sender as ToolBar)?.Template.FindName("OverflowButton", toolBar) as ToggleButton);
+            if (overflowGrid != null)
+            {
+                overflowGrid.Background = new SolidColorBrush(Color.FromArgb(0,255,255,255));
+            }
+        }
 
 
     }
