@@ -98,8 +98,8 @@
                             <Button   ToolTip="打开"  Content="{materialDesign:PackIcon Kind=FolderOpen}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="VisionEdit"/>
                             <Button   ToolTip="保存"  Content="{materialDesign:PackIcon Kind=ContentSave}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="MotionMain"/>
                             <Separator Background="Black" />
-                            <Button   ToolTip="撤销"   Content="{materialDesign:PackIcon Kind=ArrowULeftTopBold}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
-                            <Button   ToolTip="重做"   Content="{materialDesign:PackIcon Kind=ArrowURightTopBold}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
+                            <Button   ToolTip="撤销"   Content="{materialDesign:PackIcon Kind=ArrowULeftTopBold}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="Palette" />
+                            <Button   ToolTip="重做"   Content="{materialDesign:PackIcon Kind=ArrowURightTopBold}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  />
                             <Separator  Background="Black"/>
                             <CheckBox x:Name="OpenMessageModul"  Content="消息栏"   IsChecked="True" Click="OpenMessageModul_Click" />
                             <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  ToolTip="Take a nap" Height="35" ToolBar.OverflowMode="Always"  Content="{materialDesign:PackIcon Kind=Hotel}" />

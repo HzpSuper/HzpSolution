@@ -1,5 +1,4 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,22 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MotionModule.Views
+namespace HzpSolution.Views
 {
     /// <summary>
-    /// Interaction logic for ViewA.xaml
+    /// Palette.xaml 的交互逻辑
     /// </summary>
-    public partial class MotionMain : UserControl
+    public partial class Palette : UserControl
     {
-        public MotionMain()
+        public Palette()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Log.Information("log");
-            Log.Error("log");
         }
     }
 }

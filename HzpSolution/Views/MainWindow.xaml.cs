@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Windows.Media;
 using Zametek.Wpf.Core;
+using Serilog;
 
 namespace HzpSolution.Views
 {
@@ -49,6 +50,7 @@ namespace HzpSolution.Views
 
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
+            Log.CloseAndFlush();
             this.Close();
         }
 

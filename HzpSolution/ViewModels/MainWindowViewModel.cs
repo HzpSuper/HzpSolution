@@ -8,7 +8,6 @@ namespace HzpSolution.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private readonly IRegionManager _regionManager;
-        private readonly IContainerExtension _container;
         private IRegionNavigationJournal _journa ;
 
         public DelegateCommand<string> NavigateCommand { get; private set; }
@@ -28,7 +27,6 @@ namespace HzpSolution.ViewModels
         public MainWindowViewModel(IRegionManager regionManager, IContainerExtension container)
         {
             _regionManager = regionManager;
-            _container = container;
 
             NavigateCommand = new DelegateCommand<string>(Navigate);
             NavigateGoback  = new DelegateCommand(GoBack);
