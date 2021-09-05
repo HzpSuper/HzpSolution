@@ -9,5 +9,7 @@ namespace HzpSolution
     public static class Constants
     {
         public static readonly string MainRegion = nameof(MainRegion);
+
+        public static readonly string MessageRegion = nameof(MessageRegion);
     }
 }

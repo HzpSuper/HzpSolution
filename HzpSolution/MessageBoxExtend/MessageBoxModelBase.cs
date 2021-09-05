@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 namespace HzpSolution.MessageBoxExtend
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class MessageBoxModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

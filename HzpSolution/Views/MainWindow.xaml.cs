@@ -35,7 +35,6 @@ namespace HzpSolution.Views
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             await  MessageBoxE.ShowAsync("HHHH",MessageBoxButtonE.OKCancel,MessageBoxImageE.Error);
-
         }
 
 
@@ -91,7 +90,9 @@ namespace HzpSolution.Views
         {
             if ((sender as CheckBox)?.IsChecked ?? false)
             {
-                MainGrid.RowDefinitions[4].Height = new System.Windows.GridLength(1, GridUnitType.Star);
+                //MainGrid.RowDefinitions[4].Height = new System.Windows.GridLength(1, GridUnitType.Star);
+
+                MainGrid.RowDefinitions[4].Height = new System.Windows.GridLength(100);
             }
             else
             {
@@ -102,10 +103,9 @@ namespace HzpSolution.Views
         private void ToolBar_Loaded(object sender, RoutedEventArgs e)
         {
             ToolBar? toolBar = sender as ToolBar;
-            ToggleButton? overflowGrid = ((sender as ToolBar)?.Template.FindName("OverflowButton", toolBar) as ToggleButton);
-            if (overflowGrid != null)
+            if (toolBar?.Template.FindName("OverflowButton", toolBar) is ToggleButton overflowGrid)
             {
-                overflowGrid.Background = new SolidColorBrush(Color.FromArgb(0,255,255,255));
+                overflowGrid.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
             }
         }
 

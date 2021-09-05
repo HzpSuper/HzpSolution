@@ -18,9 +18,9 @@ namespace HzpSolution.Views
     /// <summary>
     /// Palette.xaml 的交互逻辑
     /// </summary>
-    public partial class Palette : UserControl
+    public partial class PaletteView : UserControl
     {
-        public Palette()
+        public PaletteView()
         {
             InitializeComponent();
         }

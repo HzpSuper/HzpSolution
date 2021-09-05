@@ -12,7 +12,7 @@
             <TextBlock Text="{Binding Message}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
-            <Button Content="按键1" HorizontalAlignment="Left" Margin="28,23,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+            <Button Content="发消息" HorizontalAlignment="Left" Margin="28,23,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SendMessageCommand}"/>
             <Button Content="按键2" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Width="75" Margin="720,360,0,0"/>
         </Grid>
     </Viewbox>

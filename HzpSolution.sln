@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HzpSolution", "HzpSolution\HzpSolution.csproj", "{FE3F658F-6E0D-4107-B63C-DBEEEEC0AC59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisionModule", "VisionModule\VisionModule.csproj", "{754639CE-48CE-4A3F-9C41-40A60743855F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisionModule", "VisionModule\VisionModule.csproj", "{754639CE-48CE-4A3F-9C41-40A60743855F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionModule", "MotionModule\MotionModule.csproj", "{FAF9DAFB-F7C8-4132-B58B-075DD4F9ED4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionModule", "MotionModule\MotionModule.csproj", "{FAF9DAFB-F7C8-4132-B58B-075DD4F9ED4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventAggregator", "EventAggregator\EventAggregator.csproj", "{A3FF06BD-0674-48F8-82D1-C0FDE618B641}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{FAF9DAFB-F7C8-4132-B58B-075DD4F9ED4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAF9DAFB-F7C8-4132-B58B-075DD4F9ED4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAF9DAFB-F7C8-4132-B58B-075DD4F9ED4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FF06BD-0674-48F8-82D1-C0FDE618B641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FF06BD-0674-48F8-82D1-C0FDE618B641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FF06BD-0674-48F8-82D1-C0FDE618B641}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FF06BD-0674-48F8-82D1-C0FDE618B641}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

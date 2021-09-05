@@ -3,9 +3,32 @@ using System.Windows.Controls;
 
 namespace HzpSolution.MessageBoxExtend
 {
-    public class MessageBoxDialogModel : ViewModelBase
+    public class MessageBoxDialogModel : MessageBoxModelBase
     {
-       #pragma warning disable CS8618
+        private string? _title;
+        public string? Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
+
+        private string? _message;
+        public string? Message
+        {
+            get => _message;
+            set => SetProperty(ref _message, value);
+        }
+
+        private string? _icon;
+        public string? Icon
+        {
+            get => _icon;
+            set => SetProperty(ref _icon, value);
+        }
+
+        public ObservableCollection<Button>? ListButton { get; }
+
+
         public MessageBoxDialogModel(string? message,MessageBoxButtonE messageBoxButton = MessageBoxButtonE.OK,MessageBoxImageE messageBoxImage= MessageBoxImageE.Information)
         {
            switch(messageBoxButton)
@@ -38,29 +61,6 @@ namespace HzpSolution.MessageBoxExtend
             }
             _message = message;
         }
-       #pragma warning restore CS8618
-
-        private string? _title;
-        public string? Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
-
-        private string? _message;
-        public string? Message
-        {
-            get => _message;
-            set => SetProperty(ref _message, value);
-        }
-
-        private string? _icon;
-        public string? Icon
-        {
-            get => _icon;
-            set => SetProperty(ref _icon, value);
-        }
-
-        public ObservableCollection<Button> ListButton { get; }
+      
     }
 }

@@ -2,46 +2,106 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:HzpSolution"
+        xmlns:behaviors ="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         prism:ViewModelLocator.AutoWireViewModel="True"
         xmlns:avalonDock="clr-namespace:AvalonDock;assembly=AvalonDock"
         xmlns:avalonDockLayout="clr-namespace:AvalonDock.Layout;assembly=AvalonDock"
-        Title="{Binding Title}"  Height="600" Width="800"  MinHeight="600" MinWidth="800" WindowStyle="None"  WindowStartupLocation="CenterScreen"  ResizeMode="NoResize"   MouseDown="Window_MouseDown"  >
+        Height="600" Width="800"  MinHeight="600" MinWidth="800" WindowStyle="None"  WindowStartupLocation="CenterScreen"  ResizeMode="NoResize"   MouseDown="Window_MouseDown"  >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="..\Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <local:MessageIndexConverter x:Key="MyMessageIndexConverter"/>
             <Style  TargetType="{x:Type ToolTip}" BasedOn ="{StaticResource  MaterialDesignToolTip}">
                 <Setter Property="Placement" Value="Center"/>
                 <Setter Property = "VerticalOffset" Value="35"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <materialDesign:DialogHost  Identifier="RootDialog" >
+    <materialDesign:DialogHost  Identifier="RootDialog" DialogTheme="Inherit">
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel MinWidth="220">
-                    <ToggleButton  Style="{StaticResource MaterialDesignHamburgerToggleButton}"   DockPanel.Dock="Top" HorizontalAlignment="Right"  Margin="16"
+                    <DockPanel DockPanel.Dock="Top">
+                        <Button Content="{materialDesign:PackIcon Kind= AccountCircle, Size=36}"  Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"  DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="20"/>
+                        <ToggleButton  Style="{StaticResource MaterialDesignHamburgerToggleButton}"  DockPanel.Dock="Right"  HorizontalAlignment="Right"  Margin="20"
                         IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"/>
+                    </DockPanel>
 
                     <TextBox 
-                        x:Name="DemoItemsSearchBox"
-                      
+                        x:Name="ModuleItemsSearchBox"
+                        Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
                         DockPanel.Dock="Top"
-                        Margin="16, 4"
+                        Margin="20, 4"
                         Width="200"
-                       />
+                        materialDesign:HintAssist.Hint="检索"
+                        materialDesign:HintAssist.IsFloating="True"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+                        materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="4"/>
+                    
+                    <ScrollViewer x:Name="scrolls" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
+                        </ScrollViewer.Resources>
+                        <ScrollViewer.Content>
+                            <TreeView x:Name="Menutree" ItemsSource="{Binding MenuTreeNodes}"  Margin="8,16,20,0">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuNodes}">
+                                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
+                                            <materialDesign:PackIcon Kind="{Binding  Icon}" Width="25" Height="25"/>
+                                            <Label Content="{Binding MenuName}" FontSize="16" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="TreeViewItem"  BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                                        <Setter Property="IsExpanded" Value="True" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+                                <behaviors:Interaction.Triggers>
+                                    <behaviors:EventTrigger EventName="SelectedItemChanged" >
+                                        <behaviors:InvokeCommandAction  Command="{Binding NavigateCommand}" CommandParameter="{Binding  SelectedItem,ElementName=Menutree}"/>
+                                    </behaviors:EventTrigger>
+                                </behaviors:Interaction.Triggers>
+                            </TreeView>
+                       <!--<StackPanel Margin="0,8,0,0" >
+                        <Expander HorizontalAlignment="Stretch" Header="视图" Foreground="{DynamicResource PrimaryHueMidBrush}" FontWeight="Bold">
+                            <ListBox Foreground="{DynamicResource PrimaryHueMidBrush}" FontWeight="Bold"  FontSize="20" Margin="24,0,24,0">
+                                 <ListBoxItem>运动</ListBoxItem>
+                                <ListBoxItem>视觉</ListBoxItem>
+                                <ListBoxItem>Blue</ListBoxItem>
+                                <ListBoxItem>Gray</ListBoxItem>
+                                <ListBoxItem>LightGray</ListBoxItem>
+                                <ListBoxItem>Red</ListBoxItem>
+                            </ListBox>
+                        </Expander>
+                        <Expander HorizontalAlignment="Stretch" Header="设置" Foreground="{DynamicResource PrimaryHueMidBrush}" FontWeight="Bold">
+                           <ListBox Foreground="{DynamicResource PrimaryHueMidBrush}" FontWeight="Bold"  FontSize="20" Margin="24,0,24,0">
+                                <ListBoxItem>运动</ListBoxItem>
+                                <ListBoxItem>视觉</ListBoxItem>
+                                <ListBoxItem>Blue</ListBoxItem>
+                                <ListBoxItem>Gray</ListBoxItem>
+                                <ListBoxItem>LightGray</ListBoxItem>
+                                <ListBoxItem>Red</ListBoxItem>
+                           </ListBox>
+                        </Expander>
+                    </StackPanel>-->
+                        </ScrollViewer.Content>
+                    </ScrollViewer>
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <Grid x:Name="MainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
                     <RowDefinition Height="35"/>
-                    <RowDefinition Height="5*"/>
-                    <RowDefinition Height="2"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="2"/>
+                    <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
                 <materialDesign:ColorZone  Mode="PrimaryLight" Grid.Row="0">
                     <Grid>
@@ -50,7 +110,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel  Orientation="Horizontal" Grid.Column="0" >
-                            <ToggleButton  x:Name="MenuToggleButton" ToolTip="扩展菜单" Cursor="Hand"  IsChecked="False" >
+                            <ToggleButton  x:Name="MenuToggleButton" ToolTip="菜单" Cursor="Hand"  IsChecked="{Binding IsOpenMenu}" >
                                 <ToggleButton.Style>
                                     <Style TargetType="ToggleButton">
                                         <Setter Property="Template">
@@ -68,7 +128,6 @@
                             </ToggleButton>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Grid.Column="1">
-                            <Button x:Name="PaletteWindow" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="调色" Content="{materialDesign:PackIcon PaletteOutline}"  />
                             <Button x:Name="MinWindow" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="最小化" Content="{materialDesign:PackIcon MinusThick}" Click="MinWindow_Click"/>
                             <Button x:Name="MaxWindow" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}"  RenderTransformOrigin="0.5,0.5"     Click="MaxWindow_Click"  >
                                 <Button.RenderTransform>
@@ -91,12 +150,12 @@
                     <ToolBarTray   Background="Transparent">
                         <ToolBar  Height="35" Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False" Loaded="ToolBar_Loaded" Background="Transparent" >
 
-                            <Button   ToolTip="向后导航"   Content="{materialDesign:PackIcon Kind=ArrowLeftBoldCircle}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"   Command="{Binding NavigateGoback}"/>
-                            <Button   ToolTip="向前导航"   Content="{materialDesign:PackIcon Kind=ArrowRightBoldCircle}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateGoForward}"/>
+                            <Button   ToolTip="向后导航"   Content="{materialDesign:PackIcon Kind=ArrowLeftBoldCircle}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"   Command="{Binding NavigateGobackCommand}"/>
+                            <Button   ToolTip="向前导航"   Content="{materialDesign:PackIcon Kind=ArrowRightBoldCircle}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateGoForwardCommand}"/>
                             <Separator Background="Black" />
-                            <Button   ToolTip="新建"  Content="{materialDesign:PackIcon Kind=FolderPlus}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="VisionMain" />
-                            <Button   ToolTip="打开"  Content="{materialDesign:PackIcon Kind=FolderOpen}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="VisionEdit"/>
-                            <Button   ToolTip="保存"  Content="{materialDesign:PackIcon Kind=ContentSave}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="MotionMain"/>
+                            <Button   ToolTip="新建"  Content="{materialDesign:PackIcon Kind=FolderPlus}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
+                            <Button   ToolTip="打开"  Content="{materialDesign:PackIcon Kind=FolderOpen}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
+                            <Button   ToolTip="保存"  Content="{materialDesign:PackIcon Kind=ContentSave}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
                             <Separator Background="Black" />
                             <Button   ToolTip="撤销"   Content="{materialDesign:PackIcon Kind=ArrowULeftTopBold}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateCommand}" CommandParameter="Palette" />
                             <Button   ToolTip="重做"   Content="{materialDesign:PackIcon Kind=ArrowURightTopBold}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  />
@@ -111,7 +170,7 @@
                         </ToolBar>
                     </ToolBarTray >
                 </materialDesign:ColorZone>
-                <avalonDock:DockingManager x:Name="DockManager" Grid.Row="2"
+                <avalonDock:DockingManager x:Name="DockManager"  Grid.Row="2"
                                    prism:RegionManager.RegionName="{x:Static local:Constants.MainRegion}"
                                    DocumentTitleTemplate="{StaticResource DocumentTitleTemplate}"
                                    AnchorableTitleTemplate="{StaticResource AnchorableTitleTemplate}"
@@ -126,7 +185,49 @@
                     </avalonDockLayout:LayoutRoot>
                 </avalonDock:DockingManager>
                 <GridSplitter Grid.Row="3"  HorizontalAlignment="Stretch" />
-                <Grid   Grid.Row="4" Background="#FF17D041"/>
+                <Grid Grid.Row="4">
+                    <Border BorderBrush="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <ListBox  ItemsSource="{Binding MessageDatasShow}"  Grid.Row="0" FontSize="14" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock  Width="30" Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource MyMessageIndexConverter}}"/>
+                                            <TextBlock  Width="100" Text="{Binding MessageTime ,StringFormat='{}{0:HH:mm:ss fff}'}"/>
+                                            <TextBlock  Text="{Binding MessageContext}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <ItemsControl ItemsSource="{Binding MessageDatas}" Grid.Row="1">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate    DataType="{x:Type local:MessageData}">
+                                        <Border  x:Name="Border" Margin="5,0,5,0">
+                                            <materialDesign:Badged BadgeColorZoneMode="PrimaryDark" Badge="{Binding Numeric}" >
+                                                <Button  x:Name="ChangeButton" Height="25"  Style="{StaticResource MaterialDesignFlatButton}" Content="{Binding Name}"
+                                                  Command="{Binding  DataContext.MessageSwitchoverCommand , RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" CommandParameter="{Binding Messagelevel}"      />
+                                            </materialDesign:Badged>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger    Binding="{Binding IsSelected}"  Value="False">
+                                                <Setter    TargetName="Border"   Property="Background"    Value="{DynamicResource MaterialDesignSelection}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Grid>
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>

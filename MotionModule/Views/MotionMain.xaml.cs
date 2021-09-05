@@ -25,11 +25,5 @@ namespace MotionModule.Views
         {
             InitializeComponent();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Log.Information("log");
-            Log.Error("log");
-        }
     }
 }
