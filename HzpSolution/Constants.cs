@@ -10,6 +10,7 @@ namespace HzpSolution
     {
         public static readonly string MainRegion = nameof(MainRegion);
 
-        public static readonly string MessageRegion = nameof(MessageRegion);
+        public static readonly string Configs  = $@"{AppContext.BaseDirectory}{nameof(Configs)}\";
+
     }
 }

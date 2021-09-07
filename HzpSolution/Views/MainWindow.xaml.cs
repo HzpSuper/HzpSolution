@@ -32,11 +32,6 @@ namespace HzpSolution.Views
             #endregion
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            await  MessageBoxE.ShowAsync("HHHH",MessageBoxButtonE.OKCancel,MessageBoxImageE.Error);
-        }
-
 
         #region 主窗体常规按钮
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -109,6 +104,18 @@ namespace HzpSolution.Views
             }
         }
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await MessageBoxE.ShowAsync("HHHH", MessageBoxButtonE.OKCancel, MessageBoxImageE.Error);
+        }
 
+
+
+        private void MenuToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Menutree.Items.Refresh();
+            ModuleItemsSearchBox.Focus();
+
+        }
     }
 }

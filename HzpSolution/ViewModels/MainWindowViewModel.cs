@@ -42,10 +42,10 @@ namespace HzpSolution.ViewModels
         public DelegateCommand? NavigateGoForwardCommand { get; private set; }
 
         private bool _isOpenMenu;
-        public  bool IsOpenMenu
+        public bool IsOpenMenu
         {
-            get { return _isOpenMenu; }
-            set { SetProperty(ref _isOpenMenu, value); }
+            get => _isOpenMenu;
+            set => SetProperty(ref _isOpenMenu, value);
         }
 
         private string? _searchKeyword;
@@ -75,30 +75,9 @@ namespace HzpSolution.ViewModels
             NavigateGobackCommand = new DelegateCommand(NavigateGoBack);
             NavigateGoForwardCommand = new DelegateCommand(NavigateGoForward);
 
-            MenuManage mm = new();
-            List<MenuTreeNode> nodes = new()
-            {
-                new() { MenuName = "视图" },
-                new() { ParentMenuName = "视图", MenuName = "视觉显示", ViewName = "VisionMain" },
-                new() { ParentMenuName = "视图", MenuName = "视觉模板", ViewName = "VisionEdit" },
-                new() { ParentMenuName = "视图", MenuName = "运动控制", ViewName = "MotionMain"},
-                new() { MenuName = "设置", Icon = "CogOutline" },
-                new() { ParentMenuName = "设置", MenuName = "主题样式", Icon = "PaletteOutline" },
-                new() { ParentMenuName = "设置", MenuName = "日志存储", Icon = "MessageTextOutline" },
-                new() { ParentMenuName = "设置", MenuName = "消息显示", Icon = "MessageProcessingOutline" }
-
-
-                , new() { ParentMenuName = "设置", MenuName = "主题样式", Icon = "PaletteOutline" },
-                new() { ParentMenuName = "设置", MenuName = "日志存储", Icon = "MessageTextOutline" },
-                new() { ParentMenuName = "设置", MenuName = "消息显示", Icon = "MessageProcessingOutline" },
-                new() { ParentMenuName = "设置", MenuName = "主题样式", Icon = "PaletteOutline" },
-                new() { ParentMenuName = "设置", MenuName = "日志存储", Icon = "MessageTextOutline" },
-                new() { ParentMenuName = "设置", MenuName = "消息显示", Icon = "MessageProcessingOutline" }
-            };
-            mm.IniMenuNodes(nodes)?.ForEach(x => _menuTreeNodes.Add(x));
-
+            new MenuManage().IniMenuNodes()?.ForEach(x => _menuTreeNodes.Add(x));
             _menuItemsView = CollectionViewSource.GetDefaultView(MenuTreeNodes);
-            _menuItemsView.Filter = DemoItemsFilter;
+            _menuItemsView.Filter = MenuItemsFilter;
         }
 
         private void Navigate(object menutreenode)
@@ -123,16 +102,63 @@ namespace HzpSolution.ViewModels
             _journa?.GoForward();
         }
 
-        private bool DemoItemsFilter(object obj)
+        private bool MenuItemsFilter(object obj)
         {
-            if (string.IsNullOrWhiteSpace(_searchKeyword))
+            if (obj is not MenuTreeNode menutreenode)
             {
                 return true;
             }
+            else
+            {
+                bool result = false;
+                if (string.IsNullOrWhiteSpace(SearchKeyword) || (!string.IsNullOrWhiteSpace(SearchKeyword) && menutreenode.MenuName.Contains(SearchKeyword)))
+                {
+                    menutreenode.Visible = System.Windows.Visibility.Visible;
+                    result = true;
+                }
 
-            return obj is MenuTreeNode item && !string.IsNullOrWhiteSpace(item.MenuName)
-                   && (item.MenuName.Contains(_searchKeyword) || item.ChildMenuNodes.All(x=>x.MenuName == _searchKeyword));
+                if (menutreenode.ChildMenuNodes !=null)
+                {
+                    foreach (MenuTreeNode node in menutreenode.ChildMenuNodes)
+                    {
+                        result = MenuItemsChildrenFilter(node) || result;
+                    }
+                }
+                return result;
+            }
         }
+
+        private bool MenuItemsChildrenFilter(MenuTreeNode  node)
+        {
+            bool result = false;
+            if (node.ChildMenuNodes != null)
+            {
+                foreach (MenuTreeNode item in node.ChildMenuNodes)
+                {
+                    result = MenuItemsChildrenFilter(item) || result;
+                }
+            }
+
+            if(string.IsNullOrEmpty(SearchKeyword))
+            {
+                result = true;
+                node.Visible = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                if (result || node.MenuName.Contains(SearchKeyword))
+                {
+                    result = true;
+                    node.Visible = System.Windows.Visibility.Visible;
+                }
+                else
+                {
+                    node.Visible = System.Windows.Visibility.Collapsed;
+                }
+            }
+            return result;
+        }
+
         #endregion
 
 

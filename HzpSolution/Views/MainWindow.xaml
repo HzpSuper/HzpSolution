@@ -21,8 +21,14 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <materialDesign:DialogHost  Identifier="RootDialog" DialogTheme="Inherit">
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+    <materialDesign:DialogHost   Identifier="RootDialog" DialogTheme="Inherit">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}" >
+            <materialDesign:DrawerHost.Style>
+                <Style TargetType="materialDesign:DrawerHost" BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}">
+                    <Setter Property="OverlayBackground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                </Style>
+            </materialDesign:DrawerHost.Style>
+
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel MinWidth="220">
                     <DockPanel DockPanel.Dock="Top">
@@ -49,7 +55,7 @@
                             <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
                         </ScrollViewer.Resources>
                         <ScrollViewer.Content>
-                            <TreeView x:Name="Menutree" ItemsSource="{Binding MenuTreeNodes}"  Margin="8,16,20,0">
+                            <TreeView x:Name="Menutree" ItemsSource="{Binding MenuTreeNodes}"  Margin="8,16,20,0" >
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuNodes}">
                                         <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
@@ -61,6 +67,7 @@
                                 <TreeView.ItemContainerStyle>
                                     <Style TargetType="TreeViewItem"  BasedOn="{StaticResource MaterialDesignTreeViewItem}">
                                         <Setter Property="IsExpanded" Value="True" />
+                                        <Setter Property="Visibility" Value="{Binding Visible}"/>
                                     </Style>
                                 </TreeView.ItemContainerStyle>
                                 <behaviors:Interaction.Triggers>
@@ -110,7 +117,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel  Orientation="Horizontal" Grid.Column="0" >
-                            <ToggleButton  x:Name="MenuToggleButton" ToolTip="菜单" Cursor="Hand"  IsChecked="{Binding IsOpenMenu}" >
+                            <ToggleButton  x:Name="MenuToggleButton" ToolTip="菜单" Cursor="Hand"  IsChecked="{Binding IsOpenMenu}" Click="MenuToggleButton_Click"  >
                                 <ToggleButton.Style>
                                     <Style TargetType="ToggleButton">
                                         <Setter Property="Template">
@@ -153,7 +160,7 @@
                             <Button   ToolTip="向后导航"   Content="{materialDesign:PackIcon Kind=ArrowLeftBoldCircle}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"   Command="{Binding NavigateGobackCommand}"/>
                             <Button   ToolTip="向前导航"   Content="{materialDesign:PackIcon Kind=ArrowRightBoldCircle}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"  Command="{Binding NavigateGoForwardCommand}"/>
                             <Separator Background="Black" />
-                            <Button   ToolTip="新建"  Content="{materialDesign:PackIcon Kind=FolderPlus}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
+                            <Button   ToolTip="新建"  Content="{materialDesign:PackIcon Kind=FolderPlus}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" Click="Button_Click" />
                             <Button   ToolTip="打开"  Content="{materialDesign:PackIcon Kind=FolderOpen}"   Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
                             <Button   ToolTip="保存"  Content="{materialDesign:PackIcon Kind=ContentSave}"  Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" />
                             <Separator Background="Black" />

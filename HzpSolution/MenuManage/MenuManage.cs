@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Config.Net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,29 @@ namespace HzpSolution
 {
     public class MenuManage
     {
-
-        public List<MenuTreeNode>? IniMenuNodes(List<MenuTreeNode> nodes)
+        private List<MenuTreeNode> GetSetting()
         {
-            List<MenuTreeNode>? mainNodes  = nodes.Where(x =>  string.IsNullOrEmpty(x.ParentMenuName) && x.IsShow == true).ToList();
-            List<MenuTreeNode>? otherNodes = nodes.Where(x => !string.IsNullOrEmpty(x.ParentMenuName) && x.IsShow == true).ToList();
+            IMenuSettings imenusettings = new ConfigurationBuilder<IMenuSettings>().UseJsonFile(Constants.Configs + "MenuManage.json").Build();
+            List<MenuTreeNode> nodes = new();
+            foreach(IMenuSetting menuSetting in imenusettings.AllMenuSetting)
+            {
+                nodes.Add(
+                new(){
+                    ParentMenuName = menuSetting.ParentMenuName,
+                    MenuName = menuSetting.MenuName,
+                    Icon = menuSetting.Icon,
+                    IsShow = menuSetting.IsShow,
+                    ViewName = menuSetting.ViewName
+                });
+            }
+            return nodes;
+        }
+    
+        public List<MenuTreeNode>? IniMenuNodes()
+        {
+            List<MenuTreeNode> nodes = GetSetting();
+            List<MenuTreeNode>? mainNodes  = nodes.Where(x => x.ParentMenuName == nameof(x.ParentMenuName) && x.IsShow).ToList();
+            List<MenuTreeNode>? otherNodes = nodes.Where(x => x.ParentMenuName != nameof(x.ParentMenuName) && x.IsShow).ToList();
             foreach (MenuTreeNode node in mainNodes)
             {
                 node.ChildMenuNodes = GetNodes(node.MenuName, otherNodes);
@@ -21,17 +40,17 @@ namespace HzpSolution
         }
 
 
-        private List<MenuTreeNode>? GetNodes(string? menuName, List<MenuTreeNode>? nodes)
+        private List<MenuTreeNode>? GetNodes(string menuName, List<MenuTreeNode>? nodes)
         {
-            List<MenuTreeNode>? mainNodes  = nodes?.Where(x => x.ParentMenuName == menuName && x.IsShow == true).ToList();
-            List<MenuTreeNode>? otherNodes = nodes?.Where(x => x.ParentMenuName != menuName && x.IsShow == true).ToList();
+            List<MenuTreeNode>? mainNodes  = nodes?.Where(x => x.ParentMenuName == menuName && x.IsShow).ToList();
+            List<MenuTreeNode>? otherNodes = nodes?.Where(x => x.ParentMenuName != menuName && x.IsShow).ToList();
             if(mainNodes != null)
             {
                 foreach (MenuTreeNode node in mainNodes)
                 {
                     node.ChildMenuNodes = GetNodes(node.MenuName, otherNodes);
                 }
-            }  
+            }
             return mainNodes;
         }
 
