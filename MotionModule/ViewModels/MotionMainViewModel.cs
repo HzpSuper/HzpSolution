@@ -25,16 +25,28 @@ namespace MotionModule.ViewModels
 
         public DelegateCommand SendMessageCommand { get; private set; }
 
+        public DelegateCommand SendMessageCommand2 { get; private set; }
+
         public MotionMainViewModel(IEventAggregator ea)
         {
             _ea = ea;
             SendMessageCommand = new DelegateCommand(SendMessage);
+            SendMessageCommand2 = new DelegateCommand(SendMessage2);
             Message = "运动控制主 from your Prism Module";
         }
 
+        private int i = 1;
         private void SendMessage()
         {
-            _ea.GetEvent<MessageSentEvent>().Publish((Message,MessageLevel.Information));
+            i++;
+            _ea.GetEvent<MessageSentEvent>().Publish((Message +  i.ToString(),MessageLevel.Information));
+        }
+
+        private int j = 1;
+        private void SendMessage2()
+        {
+            j++;
+            _ea.GetEvent<MessageSentEvent>().Publish((Message + j.ToString(), MessageLevel.Error));
         }
 
 

@@ -12,6 +12,8 @@ using System;
 using System.Windows.Media;
 using Zametek.Wpf.Core;
 using Serilog;
+using AvalonDock.Layout.Serialization;
+using System.IO;
 
 namespace HzpSolution.Views
 {
@@ -45,6 +47,11 @@ namespace HzpSolution.Views
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
             Log.CloseAndFlush();
+            XmlLayoutSerializer serializer = new(DockManager);
+            using (StreamWriter? stream = new($@"{AppContext.BaseDirectory}layout.xml"))
+            {
+                serializer.Serialize(stream);
+            }
             this.Close();
         }
 
@@ -104,18 +111,16 @@ namespace HzpSolution.Views
             }
         }
 
+        private void MenuToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Menutree.Items.Refresh();
+            ModuleItemsSearchBox.Focus();
+        }
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             await MessageBoxE.ShowAsync("HHHH", MessageBoxButtonE.OKCancel, MessageBoxImageE.Error);
         }
 
-
-
-        private void MenuToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            Menutree.Items.Refresh();
-            ModuleItemsSearchBox.Focus();
-
-        }
     }
 }

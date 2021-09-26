@@ -9,7 +9,7 @@ namespace MotionModule
     {
         public void OnInitialized(IContainerProvider containerProvider)
         {
-
+            string aa = "";
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

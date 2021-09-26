@@ -1,6 +1,8 @@
 ﻿using EventAggregator;
+using HzpSolution.Common;
 using MaterialDesignThemes.Wpf;
 using Prism.Mvvm;
+using System.Windows;
 
 namespace HzpSolution
 {
@@ -11,6 +13,13 @@ namespace HzpSolution
         {
             get => _isSelected;
             set => SetProperty(ref _isSelected, value);
+        }
+
+        private Visibility _visible;
+        public Visibility Visible
+        {
+            get => _visible;
+            set => SetProperty(ref _visible, value);
         }
 
         private string? _name;
@@ -34,8 +43,5 @@ namespace HzpSolution
             set => SetProperty(ref _messagelevel, value);
         }
 
-        public int MaxMessageCount { get; set; } = 200;
-
-    }
-    
+    }   
 }

@@ -1,4 +1,5 @@
 ﻿using EventAggregator;
+using HzpSolution.Common;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -35,11 +36,11 @@ namespace HzpSolution.ViewModels
         #region 导航部分
         private IRegionNavigationJournal? _journa;
 
-        public DelegateCommand<object>? NavigateCommand { get; private set; }
+        public DelegateCommand<object> NavigateCommand => new(Navigate);
 
-        public DelegateCommand? NavigateGobackCommand { get; private set; }
+        public DelegateCommand NavigateGobackCommand => new(NavigateGoBack);
 
-        public DelegateCommand? NavigateGoForwardCommand { get; private set; }
+        public DelegateCommand NavigateGoForwardCommand => new(NavigateGoForward);
 
         private bool _isOpenMenu;
         public bool IsOpenMenu
@@ -62,6 +63,7 @@ namespace HzpSolution.ViewModels
         }
 
         private ICollectionView? _menuItemsView;
+
         private ObservableCollection<MenuTreeNode> _menuTreeNodes = new();
         public  ObservableCollection<MenuTreeNode> MenuTreeNodes
         {
@@ -71,20 +73,16 @@ namespace HzpSolution.ViewModels
 
         private void IniNavigate()
         {
-            NavigateCommand = new DelegateCommand<object>(Navigate);
-            NavigateGobackCommand = new DelegateCommand(NavigateGoBack);
-            NavigateGoForwardCommand = new DelegateCommand(NavigateGoForward);
-
-            new MenuManage().IniMenuNodes()?.ForEach(x => _menuTreeNodes.Add(x));
+            new MenuManage().IniMenuNodes(Constants.Configs + "MenuManage.json")?.ForEach(x => _menuTreeNodes.Add(x));
             _menuItemsView = CollectionViewSource.GetDefaultView(MenuTreeNodes);
             _menuItemsView.Filter = MenuItemsFilter;
         }
 
         private void Navigate(object menutreenode)
         {
-            if(menutreenode is MenuTreeNode m)
+            if (menutreenode is MenuTreeNode m)
             {
-                if(m.ViewName != null)
+                if (m.ViewName != null)
                 {
                     _regionManager.RequestNavigate(Constants.MainRegion, m.ViewName, arg => _journa = arg.Context.NavigationService.Journal);
                     IsOpenMenu = false;
@@ -175,28 +173,17 @@ namespace HzpSolution.ViewModels
         public ObservableCollection<MessageShow> MessageDatasShow
         {
             get { return _messageDatasShow; }
-            set { SetProperty(ref _messageDatasShow, value); }
+            set { SetProperty(ref _messageDatasShow, value);}
         }
 
-        public DelegateCommand<MessageLevel?>? MessageSwitchoverCommand { get; private set; }
+        public DelegateCommand<MessageLevel?> MessageSwitchoverCommand => new(MessageSwitchover);
 
         private MessageManage? messageManage;
 
         private void IniMessageManage()
         {
-            messageManage = new(_messageDatas, _messageDatasShow);
-            _ea.GetEvent<MessageSentEvent>().Subscribe(MessageReceived, ThreadOption.PublisherThread, false);
-            MessageSwitchoverCommand = new DelegateCommand<MessageLevel?>(MessageSwitchover);
-
-            _messageDatas.Add(new() { Name = "消息", Numeric = 8, IsSelected = false, Messagelevel = MessageLevel.Information });
-            _messageDatas.Add(new() { Name = "错误", Numeric = null, IsSelected = true, Messagelevel = MessageLevel.Error });
-            _messageDatas.Add(new() { Name = "警告", Numeric = 5, IsSelected = false, Messagelevel = MessageLevel.Warning });
-
-            //_messageDatasShow.Add(new(){ MessageTime = DateTime.Now,MessageContext = "哈哈哈" });
-            //_messageDatasShow.Add(new() { MessageTime = DateTime.Now, MessageContext = "哈哈哈1" });
-            //_messageDatasShow.Add(new() { MessageTime = DateTime.Now, MessageContext = "哈哈哈2" });
-            //_messageDatasShow.Add(new() { MessageTime = DateTime.Now, MessageContext = "哈哈哈3" });
-            //_messageDatasShow.Add(new() { MessageTime = DateTime.Now, MessageContext = "哈哈哈4" });
+            messageManage = new(MessageDatas, MessageDatasShow);
+            _ = _ea.GetEvent<MessageSentEvent>().Subscribe(MessageReceived, ThreadOption.PublisherThread, false);
         }
 
         private void MessageSwitchover(MessageLevel? messageLevel)
@@ -206,10 +193,9 @@ namespace HzpSolution.ViewModels
 
         private void MessageReceived((string messagecontent, MessageLevel messageLevel) message)
         {
-            _messageDatasShow.Add(new() { MessageTime = DateTime.Now, MessageContext = message.messagecontent });
+            messageManage?.MessageReceived(message.messagecontent, message.messageLevel);
         }
-        #endregion
-
+        #endregion  
     }
 
 }

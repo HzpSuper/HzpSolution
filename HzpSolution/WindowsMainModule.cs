@@ -16,6 +16,7 @@ namespace HzpSolution
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<PaletteView>();
+            containerRegistry.RegisterForNavigation<MessageLogSetView>();
         }
     }
 

@@ -9,14 +9,15 @@ namespace HzpSolution
 {
     public class MenuManage
     {
-        private List<MenuTreeNode> GetSetting()
+        private static List<MenuTreeNode> GetSetting(string path)
         {
-            IMenuSettings imenusettings = new ConfigurationBuilder<IMenuSettings>().UseJsonFile(Constants.Configs + "MenuManage.json").Build();
+            IMenuSettings imenusettings = new ConfigurationBuilder<IMenuSettings>().UseJsonFile(path).Build();
             List<MenuTreeNode> nodes = new();
             foreach(IMenuSetting menuSetting in imenusettings.AllMenuSetting)
             {
                 nodes.Add(
-                new(){
+                new()
+                {
                     ParentMenuName = menuSetting.ParentMenuName,
                     MenuName = menuSetting.MenuName,
                     Icon = menuSetting.Icon,
@@ -27,9 +28,9 @@ namespace HzpSolution
             return nodes;
         }
     
-        public List<MenuTreeNode>? IniMenuNodes()
+        public List<MenuTreeNode>? IniMenuNodes(string path)
         {
-            List<MenuTreeNode> nodes = GetSetting();
+            List<MenuTreeNode> nodes = GetSetting(path);
             List<MenuTreeNode>? mainNodes  = nodes.Where(x => x.ParentMenuName == nameof(x.ParentMenuName) && x.IsShow).ToList();
             List<MenuTreeNode>? otherNodes = nodes.Where(x => x.ParentMenuName != nameof(x.ParentMenuName) && x.IsShow).ToList();
             foreach (MenuTreeNode node in mainNodes)

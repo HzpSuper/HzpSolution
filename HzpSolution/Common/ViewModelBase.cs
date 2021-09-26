@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace HzpSolution
+namespace HzpSolution.Common
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

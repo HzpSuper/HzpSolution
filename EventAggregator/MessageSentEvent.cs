@@ -1,4 +1,5 @@
 using Prism.Events;
+using System;
 
 namespace EventAggregator
 {
@@ -7,12 +8,14 @@ namespace EventAggregator
 
     }
 
+    [Flags]
     public enum MessageLevel
     {
-        Information = 0,
-        Warning = 1,
-        Error = 2,
-        Fatal = 3,
-        Debug = 4
+        Verbose = 1 << 0,
+        Information = 1 << 1,
+        Warning = 1 << 2,
+        Error = 1 << 3,
+        Fatal = 1 << 4,
+        Debug = 1 << 5
     }
 }

@@ -1,0 +1,133 @@
+﻿<UserControl x:Class="HzpSolution.Views.MessageLogSetView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HzpSolution.Views" 
+             xmlns:behaviors ="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Unloaded" >
+            <behaviors:InvokeCommandAction  Command="{Binding UnloadedCommand}"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    <Viewbox Stretch=" fill">
+        <Grid Width=" 800" Height="400">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Header="消息设置" Style="{DynamicResource MaterialDesignCardGroupBox}" Grid.Column="1">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="MessageProcessingOutline"  Height="32" Width="32" VerticalAlignment="Center" />
+                                <TextBlock  Margin="8,0,0,0"  VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}" FontSize="20"  />
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Foreground="{DynamicResource MaterialDesignLightForeground}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Text="消息显示数量" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"  FontWeight="Normal"/>
+                        <Slider VerticalAlignment="Center"  Minimum="{Binding MinMessageCount}" Maximum="{Binding MaxMessageCount}"  Value="{Binding ElementName=Messagecount,Path=Text}"   Style="{StaticResource  MaterialDesignDiscreteHorizontalSlider}" TickFrequency="1" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"/>
+                        <TextBox x:Name="Messagecount"  materialDesign:ValidationAssist.HorizontalAlignment="Center" Foreground="{DynamicResource MaterialDesignLightForeground}"  FontSize="16" materialDesign:TextFieldAssist.SuffixText="条" HorizontalContentAlignment="Center"    VerticalAlignment="Center"   Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+                            <TextBox.Text>
+                                <Binding Path="ShowMessageCount" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Foreground="{DynamicResource MaterialDesignLightForeground}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Text="消息显示类型" Grid.Column="0" Grid.Row="3"  Grid.ColumnSpan="3" FontWeight="Normal"/>
+                        <CheckBox HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}" IsChecked="{Binding Selectedtype[0]}" Content="{Binding Name[0]}"  Grid.Column="0" Grid.Row="4"/>
+                        <CheckBox HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}" IsChecked="{Binding Selectedtype[1]}" Content="{Binding Name[1]}"  Grid.Column="1" Grid.Row="4"/>
+                        <CheckBox HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}" IsChecked="{Binding Selectedtype[2]}" Content="{Binding Name[2]}"  Grid.Column="2" Grid.Row="4"/>
+
+                        <CheckBox HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}" IsChecked="{Binding Selectedtype[3]}" Content="{Binding Name[3]}"  Grid.Column="0" Grid.Row="5"/>
+                        <CheckBox HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}" IsChecked="{Binding Selectedtype[4]}" Content="{Binding Name[4]}"  Grid.Column="1" Grid.Row="5"/>
+                        <CheckBox HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}" IsChecked="{Binding Selectedtype[5]}" Content="{Binding Name[5]}"  Grid.Column="2" Grid.Row="5"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="日志设置" Style="{DynamicResource MaterialDesignCardGroupBox}" Grid.Column="3">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="TextBoxOutline"  Height="32" Width="32" VerticalAlignment="Center" />
+                                <TextBlock  Margin="8,0,0,0"  VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}" FontSize="20"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Foreground="{DynamicResource MaterialDesignLightForeground}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Text="日志保存天数" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"  FontWeight="Normal"/>
+                        <TextBox  materialDesign:ValidationAssist.HorizontalAlignment="Center" Foreground="{DynamicResource MaterialDesignLightForeground}"  FontSize="16" materialDesign:TextFieldAssist.SuffixText="天" HorizontalContentAlignment="Center"    VerticalAlignment="Center"   Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+                            <TextBox.Text>
+                                <Binding Path="SaveDays" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Foreground="{DynamicResource MaterialDesignLightForeground}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Text="日志保存路径" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"  FontWeight="Normal"/>
+                        <TextBox IsReadOnly="True" Text="{Binding SavePath}"  Foreground="{DynamicResource MaterialDesignLightForeground}"  FontSize="20" Style="{StaticResource MaterialDesignOutlinedTextBox}"  VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto"  Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"  Grid.RowSpan="2"/>
+                        <Button Content="更改"  Style="{StaticResource MaterialDesignFlatButton }" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" materialDesign:ButtonAssist.CornerRadius ="10"  Command = "{Binding UpdateLogSavePathCommand}">
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <TextBlock Text="更改日志保存路径"/>
+                                    <TextBlock Text="程序重启后生效"/>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+                        <Button Content="重置"  Style="{StaticResource MaterialDesignFlatButton }" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" materialDesign:ButtonAssist.CornerRadius ="10"  Command = "{Binding ResetLogSavePathCommand}">
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <TextBlock Text="重置日志保存路径"/>
+                                    <TextBlock Text="程序重启后生效"/>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </Viewbox>
+</UserControl>

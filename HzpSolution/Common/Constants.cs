@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HzpSolution
+namespace HzpSolution.Common
 {
     public static class Constants
     {
